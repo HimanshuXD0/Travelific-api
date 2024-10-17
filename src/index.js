@@ -1,11 +1,11 @@
 // config.js
 import dotenv from 'dotenv';
 import express from "express";
-import mongoose from "mongoose";
 import bodyParser from "body-parser";
+import ItemRouter from './routes/item.router.js'; 
+import AuthRouter from './routes/auth.router.js'; 
 import cors from "cors";
-import {getItem} from './controller/item.controller.js';
-import {postItem}  from './controller/item.controller.js';
+import {connectDB} from './config/db.js';
 dotenv.config();
 //mongodb+srv://sharmahimanshu2429:kt3NNsi8q8qfXMyG@cluster0.hsq1v.mongodb.net/
 const app = express();
@@ -16,24 +16,12 @@ app.use(cors());
 app.use(bodyParser.json());
 
 // MongoDB connection
-mongoose
-  .connect('mongodb+srv://sharmahimanshu2429:kt3NNsi8q8qfXMyG@cluster0.hsq1v.mongodb.net/mern_db?retryWrites=true&w=majority', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-  })
-  .then(() => console.log('MongoDB connected'))
-  .catch((err) => console.log(err));
-
-// // Define a model
-// const Item = mongoose.model('Item', new mongoose.Schema({
-//   name: String,
-//   price: String,
-// }));
+connectDB()
 
 // API routes
-app.get('/api/items',getItem);
-app.post('/api/items',postItem);
-
+app.use('/api/items',ItemRouter);
+app.use('/api/auth',AuthRouter);
+//console.log(AuthRouter)
 // Start the server
 app.listen(PORT, () => {
   console.log(`Server running on http://localhost:${PORT}`);
