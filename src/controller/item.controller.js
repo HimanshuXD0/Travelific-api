@@ -5,13 +5,18 @@ The goal of using controllers is to keep the route files clean and minimal,
 */
 
 
+import { request } from "express";
 import Item from "../models/item.model.js";
 //const {Item} = require('../models/item.model');
 
 export const getItem =async (req, res) => {
     try {
-      //res.send("hello i am ruunig")
-      const items = await Item.find();
+      const { page = 1, limit = 5 } = req.query;
+      const skip = (page - 1) * limit;
+
+      const items = await Item.find(req.filter).skip(skip).limit(limit);
+      const total = await Item.find(req.filter).countDocuments();
+      //res.json({items, totalPages: Math.ceil(total / limit), currentPage: parseInt(page) });
       res.json(items);
     } catch (err) {
       res.status(500).send('Server Error');
