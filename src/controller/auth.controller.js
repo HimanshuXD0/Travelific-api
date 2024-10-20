@@ -6,7 +6,7 @@ dotenv.config();
 
 export const signUp = async (req, res) => {
     try {
-        const { name, email, password } = req.body;
+        const { name, email, password, state, city ,mobile} = req.body;
 
         const user = await Auth.findOne({ email });
         if (user) {
@@ -17,19 +17,22 @@ export const signUp = async (req, res) => {
         }
 
         const hashedPassword = await bcrypt.hash(password, 10);
-        const newUser = new Auth({ name, email, password: hashedPassword });
+        const newUser = new Auth({ name, email, password: hashedPassword, state, city ,mobile});
 
         await newUser.save();
 
         res.status(201).json({
             message: "Signup successful",
             success: true,
+            state:newUser.state
+
         });
     } catch (e) {
         console.error(e);
         res.status(500).json({
             message: "Internal server error",
             success: false,
+            error:"Internal server error",
         });
     }
 };
@@ -60,8 +63,10 @@ export const signIn = async (req, res) => {
             success: true,
             token,
             email,
-            name:user.name
-
+            name:user.name,
+            state:user.state,
+            city:user.city,
+            mobile:user.mobile
         });
     } catch (e) {
         console.error(e);

@@ -5,6 +5,10 @@ export const signupValidation =(req,res,next)=>{
          name:joi.string().min(3).max(100).required(),
          email:joi.string().email().required(),
          password:joi.string().min(4).max(100).required(),
+         city:joi.string().required(),
+         mobile:joi.string().required(),
+         state:joi.string().required(),
+
     });
     const {error} = schema.validate(req.body);
     if(error){
