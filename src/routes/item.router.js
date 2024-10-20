@@ -16,8 +16,8 @@ import ensureAuthenticated from "../middleware/tokenization.js";
 import { applyFilters } from "../middleware/itemfilter.js";
 const router = Router();
 
-router.get('/',ensureAuthenticated,applyFilters,getItem)
-//router.get('/',applyFilters,getItem)
+//router.get('/',ensureAuthenticated,applyFilters,getItem)
+router.get('/',applyFilters,getItem)
 router.post('/',postItem)
 
 export default router;
