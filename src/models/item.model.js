@@ -8,7 +8,7 @@ const itemSchema = mongoose.Schema({
   price: {
     type: Number,
   }
-});
+}, { strict: false });
 
 const Item = mongoose.model("Item", itemSchema);
 
