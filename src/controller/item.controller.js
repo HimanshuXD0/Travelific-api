@@ -14,7 +14,7 @@ export const getItem =async (req, res) => {
       const { page = 1, limit = 5 } = req.query;
       const skip = (page - 1) * limit;
 
-      const items = await Item.find(req.filter).skip(skip).limit(limit);
+      const items = await Item.find(req.filter);
       const total = await Item.find(req.filter).countDocuments();
       //res.json({items, totalPages: Math.ceil(total / limit), currentPage: parseInt(page) });
       res.json(items);
