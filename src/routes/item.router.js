@@ -11,7 +11,7 @@ router.get('/:id') → This matches GET /api/item/:id (for example, /api/item/1)
 */
 
 import { Router } from "express";
-import { getItem, postItem } from "../controller/item.controller.js";
+import { getItem, postItem,updateItem } from "../controller/item.controller.js";
 import ensureAuthenticated from "../middleware/tokenization.js";
 import { applyFilters } from "../middleware/itemfilter.js";
 const router = Router();
@@ -19,6 +19,7 @@ const router = Router();
 //router.get('/',ensureAuthenticated,applyFilters,getItem)
 router.get('/',applyFilters,getItem)
 router.post('/',postItem)
+router.put('/item/:id', updateItem);
 
 export default router;
 
