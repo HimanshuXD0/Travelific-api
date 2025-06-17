@@ -14,12 +14,22 @@ import { Router } from "express";
 import { getItem, postItem,updateItem } from "../controller/item.controller.js";
 import ensureAuthenticated from "../middleware/tokenization.js";
 import { applyFilters } from "../middleware/itemfilter.js";
+import multer from 'multer';
 const router = Router();
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, 'uploads/videos');
+  },
+  filename: (req, file, cb) => {
+    cb(null, `${Date.now()}-${file.originalname}`);
+  }
+});
+const upload = multer({ storage });
+router.put('/upload/:id', upload.single('video'), updateItem);
 
 //router.get('/',ensureAuthenticated,applyFilters,getItem)
 router.get('/',applyFilters,getItem)
 router.post('/',postItem)
-router.put('/item/:id', updateItem);
-
 export default router;
 

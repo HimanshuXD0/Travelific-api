@@ -37,24 +37,32 @@ export const getItem =async (req, res) => {
   };
 
   export const updateItem = async (req, res) => {
-  const { id } = req.params;
-
   try {
-    const updatedItem = await Item.findByIdAndUpdate(id, req.body, {
-      new: true, // return the updated item
-      runValidators: true, // validate against schema
-    });
+    const { id } = req.params;
+    const videoPath = req.file ? req.file.path : null;
+
+    const updatedItem = await Item.findByIdAndUpdate(
+      id,
+      
+      { video: videoPath ,
+        pending: false,
+      },
+      { new: true }
+
+    );
 
     if (!updatedItem) {
       return res.status(404).json({ message: "Item not found" });
     }
 
     res.json({
-      message: "Item Updated",
       success: true,
-      updatedItem,
+      message: 'Video uploaded successfully',
+      updatedItem
     });
   } catch (err) {
-    res.status(500).send("Server Error");
+    console.error(err);
+    res.status(500).json({ success: false, message: "Upload failed" });
   }
+  
 };

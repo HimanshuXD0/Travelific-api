@@ -1,5 +1,4 @@
 
-
 import  mongoose from 'mongoose';
 const itemSchema = mongoose.Schema({
   name: {
@@ -7,6 +6,9 @@ const itemSchema = mongoose.Schema({
   },
   price: {
     type: Number,
+  },
+  video: {
+    type: String,
   }
 }, { strict: false });
 
